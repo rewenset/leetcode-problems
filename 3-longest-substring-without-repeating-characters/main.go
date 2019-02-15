@@ -10,26 +10,22 @@ func lengthOfLongestSubstring(s string) int {
 		return 1
 	}
 
-	var chars map[byte]bool
-	var m int
+	chars := make(map[byte]int)
+	var max, start int
 
 	for i := 0; i < len(s); i++ {
-		chars = make(map[byte]bool)
-
-		for j := i; j < len(s); j++ {
-			if _, ok := chars[s[j]]; ok {
-				break
-			}
-
-			chars[s[j]] = true
+		if p, ok := chars[s[i]]; ok && p >= start {
+			start = p + 1
 		}
 
-		if m < len(chars) {
-			m = len(chars)
+		chars[s[i]] = i
+
+		if max < (i - start + 1) {
+			max = i - start + 1
 		}
 	}
 
-	return m
+	return max
 }
 
 func main() {
@@ -39,4 +35,5 @@ func main() {
 	fmt.Println(lengthOfLongestSubstring(" "))        // 1
 	fmt.Println(lengthOfLongestSubstring("au"))       // 2
 	fmt.Println(lengthOfLongestSubstring("dvdf"))     // 3
+	fmt.Println(lengthOfLongestSubstring("abba"))     // 2
 }
